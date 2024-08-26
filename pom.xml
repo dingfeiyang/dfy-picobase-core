@@ -6,28 +6,14 @@
 
     <groupId>io.github.dingfeiyang</groupId>
     <artifactId>dfy-picobase-core</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.3-beta</version>
+    <name>Dfy Picobase Core</name>
     <packaging>jar</packaging>
     <url>https://github.com/dingfeiyang/dfy-picobase-core</url>
 
-    <organization>
-        <name>dingfeiyang</name>
-        <url>https://github.com/dingfeiyang</url>
-    </organization>
-
-    <!-- issue -->
-    <issueManagement>
-        <system>Github Issue</system>
-        <url>https://github.com/dingfeiyang/dfy-picobase-core/issues</url>
-    </issueManagement>
-
-    <!-- license -->
-    <licenses>
-        <license>
-            <name>The Apache Software License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-        </license>
-    </licenses>
+    <description>
+        Bean Validator With Spring Expression Language
+    </description>
 
     <!-- 开发者 -->
     <developers>
@@ -35,6 +21,7 @@
             <id>dingfeiyang</id>
             <name>dingfeiyang</name>
             <email>1415809737@qq.com</email>
+            <url>https://github.com/dingfeiyang/dfy-picobase-core</url>
             <roles>
                 <role>creator</role>
                 <role>manager</role>
@@ -44,13 +31,40 @@
         </developer>
     </developers>
 
+    <organization>
+        <name>dingfeiyang</name>
+        <url>https://github.com/dingfeiyang</url>
+    </organization>
+
+    <!-- issue -->
+    <issueManagement>
+        <system>Github</system>
+        <url>https://github.com/dingfeiyang/dfy-picobase-core/issues</url>
+    </issueManagement>
+
+    <inceptionYear>2024</inceptionYear>
+
+    <!-- license -->
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
     <!-- 代码库 -->
     <scm>
         <connection>scm:git:git@github.com:dingfeiyang/dfy-picobase-core.git</connection>
         <developerConnection>scm:git:git@github.com:dingfeiyang/dfy-picobase-core.git</developerConnection>
-        <url>git@github.com:dingfeiyang/dfy-picobase-core.git</url>
+        <url>https://github.com/dingfeiyang/dfy-picobase-core</url>
         <tag>master</tag>
     </scm>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -78,11 +92,67 @@
         </repository>
     </distributionManagement>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+
+            <!-- Source -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.1.0</version>
+                <inherited>true</inherited>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <excludeResources>true</excludeResources>
+                    <useDefaultExcludes>true</useDefaultExcludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
     <profiles>
         <profile>
             <id>release</id>
             <build>
                 <plugins>
+
+                    <!-- Javadoc -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>3.6.3</version>
+                        <configuration>
+                            <!-- 配置javadoc的额外参数 -->
+                            <additionalJOptions>
+                                <additionalJOption>-Xdoclint:none</additionalJOption>
+                            </additionalJOptions>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
                     <!--sonatype发布插件-->
                     <plugin>
                         <groupId>org.sonatype.central</groupId>
@@ -90,7 +160,7 @@
                         <version>0.4.0</version>
                         <extensions>true</extensions>
                         <configuration>
-                            <publishingServerId>central</publishingServerId>
+                            <publishingServerId>sonatype-dingfeiyang</publishingServerId>
                             <tokenAuth>true</tokenAuth>
                         </configuration>
                     </plugin>
@@ -111,29 +181,16 @@
                         </executions>
                     </plugin>
 
-                    <!-- Javadoc -->
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>3.6.3</version>
-                        <executions>
-                            <execution>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>jar</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-
-                    <!-- 工程文件自动签名-->
+                    <!-- GPG -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>3.2.3</version>
+                        <version>1.6</version>
+                        <configuration>
+                            <executable>C:\Users\dingfeiyang\AppData\Local\Programs\GnuPG\bin\gpg.exe</executable>
+                        </configuration>
                         <executions>
                             <execution>
-                                <id>sign-artifacts</id>
                                 <phase>verify</phase>
                                 <goals>
                                     <goal>sign</goal>
